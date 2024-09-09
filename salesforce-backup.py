@@ -128,7 +128,8 @@ def print_progress(size, expected_size, interval, previous_printed_interval, int
     return previous_printed_interval
 
 try:
-    with open(os.path.join(os.path.dirname(__file__), 'config.yml')) as f:
+    config_file = os.getenv('SF_CONFIG_YML') or os.path.join(os.path.dirname(__file__), 'config.yml')
+    with open(config_file) as f:
         config_hash = yaml.safe_load(f)
     for name, value in config_hash.items():
         globals()[f"{name}"] = value
