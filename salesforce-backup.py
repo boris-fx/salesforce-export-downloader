@@ -54,7 +54,7 @@ def progress_percentage(current, total):
 
 def login():
     print("Logging in...")
-    path = 'https://login.salesforce.com/services/Soap/u/28.0'
+    path = 'https://login.salesforce.com/services/Soap/u/62.0'
 
     pwd_token_encoded = sales_force_passwd_and_sec_token.replace('&', '&amp;')
 
