@@ -4,6 +4,7 @@ import sys
 import yaml
 import shutil
 import requests
+import time
 from datetime import date, datetime
 from xml.etree import ElementTree as ET
 
@@ -101,6 +102,7 @@ def download_file(login, url, expected_size):
     size = 0
     fn = file_name(url)
     print(f"Downloading {fn}...")
+    time.sleep(60)
     with open(os.path.join(data_directory, fn), "wb") as f:
         resp = http().get(f"https://{sales_force_site}{url}", headers=headers(login), stream=True)
         resp.raise_for_status()
@@ -144,6 +146,7 @@ try:
         os.makedirs(data_directory)
 
     for url in urls:
+        time.sleep(60)
         fn = file_name(url)
         file_path = os.path.join(data_directory, fn)
         retry_count = 0
