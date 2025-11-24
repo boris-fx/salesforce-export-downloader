@@ -8,6 +8,8 @@ import time
 from datetime import date, datetime
 from xml.etree import ElementTree as ET
 
+intervalAvoid429 = int(60)
+
 class Result:
     def __init__(self, xmldoc):
         self.xmldoc = xmldoc
@@ -86,12 +88,14 @@ def login():
 
 def download_index(login):
     print("Downloading index...")
+    time.sleep(intervalAvoid429)
     path = '/servlet/servlet.OrgExport'
     resp = http().post(f"https://{sales_force_site}{path}", headers=headers(login))
     return resp.text.strip()
 
 def get_download_size(login, url):
     print("Getting download size...")
+    time.sleep(intervalAvoid429)
     resp = http().head(f"https://{sales_force_site}{url}", headers=headers(login))
     return int(resp.headers.get('Content-Length', 0))
 
@@ -102,7 +106,7 @@ def download_file(login, url, expected_size):
     size = 0
     fn = file_name(url)
     print(f"Downloading {fn}...")
-    time.sleep(60)
+    time.sleep(intervalAvoid429)
     with open(os.path.join(data_directory, fn), "wb") as f:
         resp = http().get(f"https://{sales_force_site}{url}", headers=headers(login), stream=True)
         resp.raise_for_status()
@@ -146,12 +150,12 @@ try:
         os.makedirs(data_directory)
 
     for url in urls:
-        time.sleep(60)
         fn = file_name(url)
         file_path = os.path.join(data_directory, fn)
         retry_count = 0
         while retry_count < 5:
             try:
+                time.sleep(intervalAvoid429)
                 print(f"Working on: {url}")
                 expected_size = get_download_size(result, url)
                 print(f"Expected size: {expected_size}")
